@@ -1,6 +1,7 @@
 # InkDesktop
 Software to use signature pads on windows. With an icon in the notification area at the bottom right hand corner, 
 a small popup window will appear whenever a supported signature pad is connected.
+![InkDesktop Screenshot](https://github.com/DennisWacom/InkDesktop/blob/master/inkdesktop.png?raw=true)
 ## Dependencies
 Wacom STU SDK
 InkPlatform (https://github.com/DennisWacom/InkPlatform)
