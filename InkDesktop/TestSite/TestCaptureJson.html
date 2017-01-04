@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Test SignatureDesktop HttpListener</title>
+    <script type="text/javascript" src="scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnCapture").click(function () {
+                $('#txtSignature').val('');
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8008/capturejson',
+                    contentType: 'text/plain',
+                    xhrFields: { withCredentials: false },
+                    data: { name: $('#txtName').val(), reason: $('#txtReason').val() },
+                    headers: {},
+                    success: function (data, textStatus, xhr) {
+                        $("#txtSignature").val(data);
+                    },
+                    error: function (request, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+    <form>
+        <table width="500" border="0" cellspacing="5">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" id="txtName" /></td>
+            </tr>
+            <tr>
+                <td>Reason</td>
+                <td><input type="text" id="txtReason" /></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" id="btnCapture" value="Capture Json" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea id="txtSignature" cols="100" rows="20"></textarea>
+                </td>
+            </tr>
+        </table> 
+    </form>
+</body>
+</html>

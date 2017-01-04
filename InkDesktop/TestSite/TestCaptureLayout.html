@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Test SignatureDesktop HttpListener</title>
+    <script type="text/javascript" src="scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#btnCapture").click(function () {
+                var layouts = [];
+                layouts[0] = 'layouts/choose.json';
+                layouts[1] = 'layouts/color.json';
+                layouts[2] = 'layouts/basic.json';
+
+                var path = location.pathname.substring(0, location.pathname.lastIndexOf('/'));
+                path = path.substring(1, path.length) + '/';
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8008/runlayoutfiles?' + new Date().getTime(),
+                    contentType: 'text/plain',
+                    xhrFields: { withCredentials: false },
+
+                    headers: {},
+                    data: { layout: layouts, current: path},
+                    success: function (data, textStatus, xhr) {
+                        $("#imgSignature").attr('src', 'data:image/png;base64,' + data);
+                    },
+                    error: function (request, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+    <form>
+        <input type="button" id="btnCapture" value="Layout" />
+        <img id="imgSignature" src=""/>
+    </form>
+</body>
+</html>

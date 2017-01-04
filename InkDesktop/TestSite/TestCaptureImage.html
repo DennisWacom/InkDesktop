@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Test SignatureDesktop HttpListener</title>
+    <script type="text/javascript">
+        function CaptureSignature() {
+            document.getElementById("imgSignature").src = "http://localhost:8008/captureimage?" + new Date().getTime();
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <input type="button" id="btnCapture" value="Capture Image" onclick="CaptureSignature()"/>
+        <img id="imgSignature" src=""/>
+    </form>
+</body>
+</html>
