@@ -40,8 +40,11 @@ namespace InkDesktop
         private const string CAPTURE_JSON = "capturejson";
         private const string RUN_LAYOUT_FILES = "runlayoutfiles";
         private const string RUN_LAYOUT_JSONS = "runlayoutjsons";
+        private const string CLOSE_SPWINDOW = "closespwindow";
         private const string SIGNATURE = "signature";
         private const string FILE = "file";
+
+        private List<string> _interruptProcesses = new List<string>();
 
         protected string _rootDirectory;
         protected int _port;
@@ -62,6 +65,8 @@ namespace InkDesktop
             _rootDirectory = rootDir;
             _port = port;
             _inkHub = inkHub;
+
+            _interruptProcesses.Add(CLOSE_SPWINDOW);
         }
 
         public int Port
@@ -136,7 +141,18 @@ namespace InkDesktop
                 _threadStarted = false;
                 MessageBox.Show(strings.WEB_MANAGER + ": " + strings.PORT_LISTEN_EXCEPTION + " : " + ex.Message);
             }
-            
+
+            try
+            {
+                _listener.BeginGetContext(Process, null);
+            }
+            catch (Exception ex)
+            {
+                Log("Error getting context asynchronously");
+                Log(ex.Message);
+            }
+
+            /*
             while (true)
             {
                 try
@@ -149,8 +165,9 @@ namespace InkDesktop
 
                 }
             }
+            */
         }
-        
+
         private void ProcessCaptureImageRequest(HttpListenerContext context, string name, string reason)
         {
             Log("Capture Image");
@@ -341,21 +358,94 @@ namespace InkDesktop
             }
         }
 
-        private void Process(HttpListenerContext context)
+        private void ProcessCloseSpWindowRequest(HttpListenerContext context)
+        {
+            Log("Close signpad window request");
+
+            ContextPenData contextPenData = null;
+            try
+            {
+                Log("Call CloseSpWindow to InkHub");
+                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.CloseDefaultSignpadWindowDelegate, null);
+                if(contextPenData != null)
+                {
+                    Log("ContextPenDate received");
+
+                    Bitmap bitmap = null;
+                    Log("Generate image from contextPenData");
+                    InkProcessor.GenerateImageResult result = InkProcessor.GenerateImageFromContextPenData(out bitmap, contextPenData, Pens.Black, Color.White, true, true);
+                    if (bitmap != null)
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            Log("Convert image to png format");
+                            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                            byte[] pngBytes = ms.ToArray();
+                            Log("Convert png to base 64");
+                            string base64 = Convert.ToBase64String(pngBytes);
+                            byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);
+                            Log("Sending png base64 to client");
+                            sendResponse(context, base64Bytes, "image/png", HttpStatusCode.OK);
+                        }
+                    }
+                    else
+                    {
+                        Log("Error generating image from context pen data", 1);
+                        sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
+                    }
+                }
+                else
+                {
+                    Log("No pen data received");
+                }
+            }
+            catch (Exception)
+            {
+                Log("Error capturing image from inkhub", 1);
+                sendErrorResponse(context, strings.ERROR_INK_HUB_SIGN);
+            }
+        }
+
+        private bool IsInterruptProcess(string filename)
+        {
+            foreach(string process in _interruptProcesses)
+            {
+                if(process == filename)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void Process(IAsyncResult asyncResult)
         {
             Log("Context received, Start Processing");
-            if (currentContext != null)
-            {
-                Thread.Sleep(_webManagerTimeout);
-                currentContext = null;
-            }
 
-            currentContext = context;
+            HttpListenerContext context = _listener.EndGetContext(asyncResult);
+            _listener.BeginGetContext(Process, null);
+            
             string filename = context.Request.Url.AbsolutePath;
-
-            Log("Processing request for url - " + filename + " from " + context.Request.RemoteEndPoint.Address + " on Port :" + context.Request.RemoteEndPoint.Port);
             filename = filename.Substring(1);
 
+            if (currentContext != null)
+            {
+                if (IsInterruptProcess(filename))
+                {
+                    //Interrupt process will use previous context, and will not return anything on its own
+                    context = currentContext;
+                }
+                else
+                {
+                    Thread.Sleep(_webManagerTimeout);
+                    currentContext = null;
+                }
+            }
+            
+            currentContext = context;
+
+            Log("Processing request for url - " + filename + " from " + context.Request.RemoteEndPoint.Address + " on Port :" + context.Request.RemoteEndPoint.Port);
+            
             NameValueCollection query = context.Request.QueryString;
             string name = query[QUERY_NAME];
             string reason = query[QUERY_REASON];
@@ -413,6 +503,10 @@ namespace InkDesktop
             else if(filename.Equals(RUN_LAYOUT_JSONS) && ljson != null)
             {
                 ProcessRunLayoutJsonsRequest(context, jsons, Variables);
+            }
+            else if (filename.Equals(CLOSE_SPWINDOW))
+            {
+                ProcessCloseSpWindowRequest(context);
             }
 
             currentContext = null;

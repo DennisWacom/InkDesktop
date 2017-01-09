@@ -33,6 +33,9 @@ namespace InkDesktop
         public delegate ContextPenData RunLayoutJsonFn(List<string> jsons, Dictionary<string, string> variables);
         public RunLayoutJsonFn RunLayoutJsonDelegate;
 
+        public delegate ContextPenData CloseDefaultSignpadWindowFn();
+        public CloseDefaultSignpadWindowFn CloseDefaultSignpadWindowDelegate;
+
         NotifyIcon _notifyIcon;
         ContextMenuStrip _contextMenu;
         WebManager _webManager;
@@ -46,7 +49,8 @@ namespace InkDesktop
 
         private List<PenDevice> _penDeviceList = new List<PenDevice>();
         private PenDevice _currentPenDevice = null;
- 
+        private SignpadWindow _defaultSignpadWindow;
+
         public InkHub()
         {
             InitializeComponent();
@@ -79,6 +83,7 @@ namespace InkDesktop
             this.CaptureSignatureDelegate = CaptureSignature;
             this.RunLayoutDelegate = RunLayouts;
             this.RunLayoutJsonDelegate = RunLayoutJsons;
+            this.CloseDefaultSignpadWindowDelegate = CloseDefaultSignpadWindow;
             
             _webManager = new WebManager(".", Properties.Settings.Default.WebManagerPort, this);
             _webManager.LogFunction = WebManagerLog;
@@ -168,6 +173,23 @@ namespace InkDesktop
             }
         }
 
+        public ContextPenData CloseDefaultSignpadWindow()
+        {
+            Log("CloseDefaultSignpadWindow");
+            if(_defaultSignpadWindow != null && _defaultSignpadWindow.Visible == true)
+            {
+                Log("Save pen data and close window");
+                ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
+                _defaultSignpadWindow.Close();
+                return contextPenData;
+            }
+            else
+            {
+                Log("But no signpad window opened");
+                return null;
+            }
+        }
+
         public ContextPenData RunLayouts(string[] layout, Dictionary<string, string> variables)
         {
             OpenAndFocus();
@@ -193,13 +215,13 @@ namespace InkDesktop
 
             UpdateLayoutElementsWithVariableValues(layoutList, variables);
 
-            SignpadWindow spw = new SignpadWindow();
-            spw.LogFunction = SignpadWindowLog;
+            _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogFunction = SignpadWindowLog;
 
-            int result = spw.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
+            int result = _defaultSignpadWindow.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
             {
-                ContextPenData contextPenData = spw.ContextPenData;
+                ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
                 return contextPenData;
             }
             else
@@ -239,13 +261,13 @@ namespace InkDesktop
 
             UpdateLayoutElementsWithVariableValues(layoutList, variables);
 
-            SignpadWindow spw = new SignpadWindow();
-            spw.LogFunction = SignpadWindowLog;
+            _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogFunction = SignpadWindowLog;
 
-            int result = spw.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
+            int result = _defaultSignpadWindow.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
             {
-                ContextPenData contextPenData = spw.ContextPenData;
+                ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
                 return contextPenData;
             }
             else 
@@ -268,12 +290,12 @@ namespace InkDesktop
                 return new ContextPenData((int)PEN_DEVICE_ERROR.NOT_CONNECTED, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.NOT_CONNECTED));
             }
 
-            SignpadWindow spw = new SignpadWindow();
-            spw.LogFunction = SignpadWindowLog;
-            int result = spw.CaptureSignatureDialog(who, why, _currentPenDevice, this);
+            _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogFunction = SignpadWindowLog;
+            int result = _defaultSignpadWindow.CaptureSignatureDialog(who, why, _currentPenDevice, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
             {
-                ContextPenData contextPenData = spw.ContextPenData;
+                ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
                 contextPenData.AddData("name", who);
                 contextPenData.AddData("reason", why);
                 return contextPenData;
@@ -298,12 +320,12 @@ namespace InkDesktop
                 return PEN_DEVICE_ERROR.NOT_CONNECTED.ToString();
             }
 
-            SignpadWindow spw = new SignpadWindow();
-            spw.LogFunction = SignpadWindowLog;
-            int result = spw.CaptureSignatureDialog(who, why, _currentPenDevice, this);
+            _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogFunction = SignpadWindowLog;
+            int result = _defaultSignpadWindow.CaptureSignatureDialog(who, why, _currentPenDevice, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
             {
-                ContextPenData contextPenData = spw.ContextPenData;
+                ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
                 contextPenData.AddData("name", who);
                 contextPenData.AddData("reason", why);
                 return contextPenData.ToString();
