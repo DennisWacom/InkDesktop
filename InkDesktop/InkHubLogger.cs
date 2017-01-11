@@ -48,7 +48,7 @@ namespace InkDesktop
             try
             {
                 int alert = alertType % 10;
-                if ((_logInfo && alertType == 0) || (_logException && alertType == 1) || (_logPenData && alertType == 2))
+                if ((_logInfo && alert == 0) || (_logException && alert == 1) || (_logPenData && alert == 2))
                 {
                     msg = DateTime.Now.ToString("yyyyMMdd_HHmmss") + " - " + msg;
                     msg = msg + Environment.NewLine;
