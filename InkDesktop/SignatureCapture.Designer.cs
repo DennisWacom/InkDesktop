@@ -50,8 +50,6 @@
             // 
             // signpadControl
             // 
-            this.signpadControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.signpadControl.BackColor = System.Drawing.Color.White;
             this.signpadControl.ContextMenuStrip = this.contextMenuStrip;
             this.signpadControl.DefaultInkWidth = 0.7F;
@@ -61,7 +59,7 @@
             this.signpadControl.Logging = true;
             this.signpadControl.Name = "signpadControl";
             this.signpadControl.ResizeCondition = InkPlatform.UserControls.SignpadControl.RESIZE_CONDITION.ACTUAL_SIZE;
-            this.signpadControl.Size = new System.Drawing.Size(447, 199);
+            this.signpadControl.Size = new System.Drawing.Size(320, 200);
             this.signpadControl.TabIndex = 0;
             // 
             // contextMenuStrip
@@ -108,14 +106,14 @@
             // 
             this.txtName.Location = new System.Drawing.Point(80, 12);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(294, 20);
+            this.txtName.Size = new System.Drawing.Size(217, 20);
             this.txtName.TabIndex = 3;
             // 
             // txtReason
             // 
             this.txtReason.Location = new System.Drawing.Point(80, 38);
             this.txtReason.Name = "txtReason";
-            this.txtReason.Size = new System.Drawing.Size(294, 20);
+            this.txtReason.Size = new System.Drawing.Size(217, 20);
             this.txtReason.TabIndex = 4;
             // 
             // label3
@@ -132,13 +130,13 @@
             this.cboPenDevice.FormattingEnabled = true;
             this.cboPenDevice.Location = new System.Drawing.Point(80, 64);
             this.cboPenDevice.Name = "cboPenDevice";
-            this.cboPenDevice.Size = new System.Drawing.Size(263, 21);
+            this.cboPenDevice.Size = new System.Drawing.Size(179, 21);
             this.cboPenDevice.TabIndex = 6;
             this.cboPenDevice.SelectedIndexChanged += new System.EventHandler(this.cboPenDevice_SelectedIndexChanged);
             // 
             // btnSign
             // 
-            this.btnSign.Location = new System.Drawing.Point(131, 102);
+            this.btnSign.Location = new System.Drawing.Point(76, 102);
             this.btnSign.Name = "btnSign";
             this.btnSign.Size = new System.Drawing.Size(75, 23);
             this.btnSign.TabIndex = 7;
@@ -148,7 +146,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(222, 102);
+            this.btnCancel.Location = new System.Drawing.Point(167, 102);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 8;
@@ -160,7 +158,7 @@
             // 
             this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRefresh.Image = global::InkDesktop.Properties.Resources.refresh;
-            this.btnRefresh.Location = new System.Drawing.Point(349, 60);
+            this.btnRefresh.Location = new System.Drawing.Point(268, 60);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(25, 25);
             this.btnRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -172,7 +170,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 348);
+            this.ClientSize = new System.Drawing.Size(326, 348);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSign);
