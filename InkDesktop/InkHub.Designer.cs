@@ -37,14 +37,23 @@
             this.cmsWebServer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiToggle = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiPort = new System.Windows.Forms.ToolStripMenuItem();
+            this.examplesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rawDataJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rawDataBase64ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jsonLayoutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnWebServer = new System.Windows.Forms.PictureBox();
             this.btnSign = new System.Windows.Forms.PictureBox();
+            this.cmsInkDesktop = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.todaysLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picHardware)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRefresh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSettings)).BeginInit();
             this.cmsWebServer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnWebServer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSign)).BeginInit();
+            this.cmsInkDesktop.SuspendLayout();
             this.SuspendLayout();
             // 
             // picHardware
@@ -100,9 +109,10 @@
             // 
             this.cmsWebServer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiToggle,
-            this.tsmiPort});
+            this.tsmiPort,
+            this.examplesToolStripMenuItem});
             this.cmsWebServer.Name = "cmsWebServer";
-            this.cmsWebServer.Size = new System.Drawing.Size(134, 48);
+            this.cmsWebServer.Size = new System.Drawing.Size(134, 70);
             // 
             // tsmiToggle
             // 
@@ -117,6 +127,45 @@
             this.tsmiPort.Size = new System.Drawing.Size(133, 22);
             this.tsmiPort.Text = "Port";
             this.tsmiPort.Click += new System.EventHandler(this.tsmiPort_Click);
+            // 
+            // examplesToolStripMenuItem
+            // 
+            this.examplesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.imageCaptureToolStripMenuItem,
+            this.rawDataJSONToolStripMenuItem,
+            this.rawDataBase64ToolStripMenuItem,
+            this.jsonLayoutToolStripMenuItem1});
+            this.examplesToolStripMenuItem.Name = "examplesToolStripMenuItem";
+            this.examplesToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.examplesToolStripMenuItem.Text = "Examples";
+            // 
+            // imageCaptureToolStripMenuItem
+            // 
+            this.imageCaptureToolStripMenuItem.Name = "imageCaptureToolStripMenuItem";
+            this.imageCaptureToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.imageCaptureToolStripMenuItem.Text = "Image Capture";
+            this.imageCaptureToolStripMenuItem.Click += new System.EventHandler(this.imageCaptureToolStripMenuItem_Click);
+            // 
+            // rawDataJSONToolStripMenuItem
+            // 
+            this.rawDataJSONToolStripMenuItem.Name = "rawDataJSONToolStripMenuItem";
+            this.rawDataJSONToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.rawDataJSONToolStripMenuItem.Text = "Raw Data (JSON)";
+            this.rawDataJSONToolStripMenuItem.Click += new System.EventHandler(this.rawDataJSONToolStripMenuItem_Click);
+            // 
+            // rawDataBase64ToolStripMenuItem
+            // 
+            this.rawDataBase64ToolStripMenuItem.Name = "rawDataBase64ToolStripMenuItem";
+            this.rawDataBase64ToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
+            this.rawDataBase64ToolStripMenuItem.Text = "Raw Data (Base64)";
+            this.rawDataBase64ToolStripMenuItem.Click += new System.EventHandler(this.rawDataBase64ToolStripMenuItem_Click);
+            // 
+            // jsonLayoutToolStripMenuItem1
+            // 
+            this.jsonLayoutToolStripMenuItem1.Name = "jsonLayoutToolStripMenuItem1";
+            this.jsonLayoutToolStripMenuItem1.Size = new System.Drawing.Size(170, 22);
+            this.jsonLayoutToolStripMenuItem1.Text = "JSON Layout";
+            this.jsonLayoutToolStripMenuItem1.Click += new System.EventHandler(this.jsonLayoutToolStripMenuItem1_Click);
             // 
             // btnWebServer
             // 
@@ -146,12 +195,34 @@
             this.btnSign.TabStop = false;
             this.btnSign.Click += new System.EventHandler(this.btnSign_Click);
             // 
+            // cmsInkDesktop
+            // 
+            this.cmsInkDesktop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewLogsToolStripMenuItem,
+            this.todaysLogToolStripMenuItem});
+            this.cmsInkDesktop.Name = "cmsInkDesktop";
+            this.cmsInkDesktop.Size = new System.Drawing.Size(153, 70);
+            // 
+            // viewLogsToolStripMenuItem
+            // 
+            this.viewLogsToolStripMenuItem.Name = "viewLogsToolStripMenuItem";
+            this.viewLogsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewLogsToolStripMenuItem.Text = "View Logs";
+            this.viewLogsToolStripMenuItem.Click += new System.EventHandler(this.viewLogsToolStripMenuItem_Click);
+            // 
+            // todaysLogToolStripMenuItem
+            // 
+            this.todaysLogToolStripMenuItem.Name = "todaysLogToolStripMenuItem";
+            this.todaysLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.todaysLogToolStripMenuItem.Text = "Today\'s Log";
+            this.todaysLogToolStripMenuItem.Click += new System.EventHandler(this.todaysLogToolStripMenuItem_Click);
+            // 
             // InkHub
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(380, 194);
-            this.ContextMenuStrip = this.cmsWebServer;
+            this.ContextMenuStrip = this.cmsInkDesktop;
             this.Controls.Add(this.btnSign);
             this.Controls.Add(this.btnWebServer);
             this.Controls.Add(this.picSettings);
@@ -173,6 +244,7 @@
             this.cmsWebServer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnWebServer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSign)).EndInit();
+            this.cmsInkDesktop.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -188,6 +260,14 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiPort;
         private System.Windows.Forms.PictureBox btnWebServer;
         private System.Windows.Forms.PictureBox btnSign;
+        private System.Windows.Forms.ToolStripMenuItem rawDataJSONToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rawDataBase64ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jsonLayoutToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem imageCaptureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem examplesToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip cmsInkDesktop;
+        private System.Windows.Forms.ToolStripMenuItem viewLogsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem todaysLogToolStripMenuItem;
     }
 }
 

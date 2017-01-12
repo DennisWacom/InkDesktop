@@ -12,23 +12,24 @@ namespace InkDesktop
     {
         private string _logFilePath;
         private FileStream _fs;
+        private string _logFolder;
 
         bool _logInfo = false;
         bool _logException = false;
         bool _logPenData = false;
-
+        
         public InkHubLogger()
         {
             string AppDataLocal = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
             string folderName = Assembly.GetExecutingAssembly().GetName().Name;
-            string logFolder = AppDataLocal + "\\" + folderName;
-            if (!Directory.Exists(logFolder))
+            _logFolder = AppDataLocal + "\\" + folderName;
+            if (!Directory.Exists(_logFolder))
             {
-                Directory.CreateDirectory(logFolder);
+                Directory.CreateDirectory(_logFolder);
             }
 
             string filename = getLogFilename();
-            _logFilePath = logFolder + "\\" + filename;
+            _logFilePath = _logFolder + "\\" + filename;
 
             _logInfo = Properties.Settings.Default.LogInfo;
             _logException = Properties.Settings.Default.LogException;
@@ -36,6 +37,16 @@ namespace InkDesktop
 
             _fs = File.Open(_logFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
 
+        }
+
+        public string GetLogFolder()
+        {
+            return _logFolder;
+        }
+
+        public string GetTodayLogFilePath()
+        {
+            return _logFilePath;
         }
         
         private string getLogFilename()

@@ -16,11 +16,16 @@ using InkPlatform.Ink;
 using InkPlatform.UserControls;
 using InkPlatform.UserInterface;
 using System.Globalization;
+using System.IO;
+using System.Diagnostics;
 
 namespace InkDesktop
 {
     public partial class InkHub : Form
     {
+        public string TestSiteFolder = "C:\\Program Files (x86)\\Wacom Solution Partner\\InkDesktop\\TestSite";
+        public string LogFolder = "";
+
         public delegate string CaptureSignatureJsonFn(string who, string why);
         public CaptureSignatureJsonFn CaptureSignatureJsonDelegate;
 
@@ -206,10 +211,11 @@ namespace InkDesktop
             {
                 layoutList = LayoutManager.ReadLayoutFiles(layout);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log("Read layout files failed");
-                MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
+                Log(ex.Message);
+                //MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
+                MessageBox.Show(ex.Message);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.LAYOUT_FAIL, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
             }
 
@@ -243,19 +249,21 @@ namespace InkDesktop
                 return new ContextPenData((int)PEN_DEVICE_ERROR.NOT_CONNECTED, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.NOT_CONNECTED));
             }
 
+            string currentJsonFile = "";
             List<Layout> layoutList = new List<Layout>();
             try
             {
                 for(int i=0; i<jsons.Count; i++)
                 {
+                    currentJsonFile = jsons[i];
                     Layout layout = (Layout)JSONSerializer.DeserializeLayout(jsons[i]);
                     layoutList.Add(layout);
                 }
             }
             catch (Exception)
             {
-                Log("Read layout files failed");
-                MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
+                Log("Read layout files failed - " + currentJsonFile);
+                MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL) + " - " + currentJsonFile);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.LAYOUT_FAIL, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
             }
 
@@ -648,6 +656,86 @@ namespace InkDesktop
                 MessageBox.Show(strings.SIGN_CAPT_UNABLE_SHOW);
             }
             
+        }
+
+        private void imageCaptureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = Path.Combine(TestSiteFolder, "TestCaptureImage.html");
+
+            if (File.Exists(filename))
+            {
+                Process.Start(filename);
+            }
+            else
+            {
+                MessageBox.Show(strings.FILE_NOT_FOUND + ": " + filename);
+            }
+        }
+
+        private void rawDataJSONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = Path.Combine(TestSiteFolder, "TestCaptureJson.html");
+
+            if (File.Exists(filename))
+            {
+                Process.Start(filename);
+            }
+            else
+            {
+                MessageBox.Show(strings.FILE_NOT_FOUND + ": " + filename);
+            }
+        }
+
+        private void rawDataBase64ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = Path.Combine(TestSiteFolder, "TestCaptureSigData.html");
+
+            if (File.Exists(filename))
+            {
+                Process.Start(filename);
+            }
+            else
+            {
+                MessageBox.Show(strings.FILE_NOT_FOUND + ": " + filename);
+            }
+        }
+        
+        private void jsonLayoutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            string filename = Path.Combine(TestSiteFolder, "TestCaptureLayout.html");
+
+            if (File.Exists(filename))
+            {
+                Process.Start(filename);
+            }
+            else
+            {
+                MessageBox.Show(strings.FILE_NOT_FOUND + ": " + filename);
+            }
+        }
+
+        private void viewLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_logger != null)
+            {
+                string _logFolder = _logger.GetLogFolder();
+                if (Directory.Exists(_logFolder))
+                {
+                    Process.Start(_logFolder);
+                }
+            }
+        }
+
+        private void todaysLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_logger != null)
+            {
+                string _logFilePath = _logger.GetTodayLogFilePath();
+                if (File.Exists(_logFilePath))
+                {
+                    Process.Start(_logFilePath);
+                }
+            }
         }
     }
 }
