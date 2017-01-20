@@ -158,12 +158,17 @@ namespace InkDesktop
             Log("[SignpadWindow] " + msg, alertType);
         }
 
-        private void OpenAndFocus()
+        protected void PauseSlideShow(PenDevice penDevice)
         {
             int pauseTime = Properties.Settings.Default.SlideShowInterrupt;
-            if(pauseTime == 0) { pauseTime = DEFAULT_SLIDESHOW_PAUSE_TIME; }
+            if (pauseTime == 0) { pauseTime = DEFAULT_SLIDESHOW_PAUSE_TIME; }
 
-            _slideShowManager.PausePenDevice(_currentPenDevice, 6000);
+            _slideShowManager.PausePenDevice(penDevice, pauseTime);
+        }
+
+        private void OpenAndFocus()
+        {
+            PauseSlideShow(_currentPenDevice);
 
             if (Application.OpenForms[this.Name] == null)
             {
@@ -671,6 +676,7 @@ namespace InkDesktop
             if(_signCapt == null || _signCapt.Disposing || _signCapt.IsDisposed)
             {
                 _signCapt = new SignatureCapture();
+                _signCapt.PauseSlideShow = PauseSlideShow;
             }
             try
             {

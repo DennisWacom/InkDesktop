@@ -23,7 +23,10 @@ namespace InkDesktop
 
         public delegate void SendLog(string msg, int alertType);
         public SendLog LogFunction;
-        
+
+        public delegate void PauseSlideShowDelegate(PenDevice penDevice);
+        public PauseSlideShowDelegate PauseSlideShow;
+
         public SignatureCapture()
         {
             InitializeComponent();
@@ -104,6 +107,11 @@ namespace InkDesktop
             Log("Signature requested");
             if(_currentPenDevice != null)
             {
+                if(PauseSlideShow != null)
+                {
+                    Log("Pause slide show");
+                    PauseSlideShow(_currentPenDevice);
+                }
                 signpadControl.DonePressed = SignatureDone;
                 Log("Set inking = true");
                 signpadControl.SetInking(true);
