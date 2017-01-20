@@ -94,5 +94,53 @@ namespace InkDesktop.Properties {
                 this["Logging"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TestSite")]
+        public string TestSiteFolder {
+            get {
+                return ((string)(this["TestSiteFolder"]));
+            }
+            set {
+                this["TestSiteFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SlideShow")]
+        public string SlideShowFolder {
+            get {
+                return ((string)(this["SlideShowFolder"]));
+            }
+            set {
+                this["SlideShowFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SlideShowSettings.json")]
+        public string SlideShowSettings {
+            get {
+                return ((string)(this["SlideShowSettings"]));
+            }
+            set {
+                this["SlideShowSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6000")]
+        public int SlideShowInterrupt {
+            get {
+                return ((int)(this["SlideShowInterrupt"]));
+            }
+            set {
+                this["SlideShowInterrupt"] = value;
+            }
+        }
     }
 }

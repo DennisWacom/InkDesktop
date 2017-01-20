@@ -51,13 +51,18 @@
     <ApplicationIcon>Resources\bluepen.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InkPlatform, Version=1.0.5.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\WacomSolutionPartner.InkPlatform.1.0.5\lib\net452\InkPlatform.dll</HintPath>
+    <Reference Include="InkPlatform, Version=1.0.5.7, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\WacomSolutionPartner.InkPlatform.1.0.5.7\lib\net452\InkPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,13 +107,88 @@
     <Compile Include="SlideshowManager.Designer.cs">
       <DependentUpon>SlideshowManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="SlideShowSettings.cs" />
     <Compile Include="strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>strings.resx</DependentUpon>
     </Compile>
     <Compile Include="WebManager.cs" />
+    <Content Include="SlideShow\STU-430V\stu430a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430V\stu430b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430V\stu430c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430V\stu430d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Utilities\getSerialPorts.exe" />
+    <None Include="packages.config" />
+    <None Include="Resources\slideshow.png" />
+    <Content Include="SlideShow\STU-300\stu300a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-300\stu300b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-300\stu300c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-300\stu300d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430\stu430a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430\stu430b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430\stu430c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-430\stu430d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-500\stu500a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-500\stu500b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-500\stu500c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-500\stu500d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-520\stu520a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-520\stu520b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-520\stu520c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-520\stu520d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-530\stu530a.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-530\stu530b.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-530\stu530c.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SlideShow\STU-530\stu530d.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="InkHub.resx">
       <DependentUpon>InkHub.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,7 +218,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>strings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -148,10 +227,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="TestSite\Layouts\basic.json" />
-    <Content Include="TestSite\Layouts\choose.json" />
-    <Content Include="TestSite\Layouts\choose_white.json" />
-    <Content Include="TestSite\Layouts\color.json" />
+    <Content Include="TestSite\Layouts\basic.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\Layouts\choose.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\Layouts\choose_white.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\Layouts\color.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -179,14 +266,30 @@
     <None Include="Resources\info.png" />
     <None Include="Resources\sign.ico" />
     <None Include="Resources\sign.png" />
-    <Content Include="TestSite\Layouts\accept_button.png" />
-    <Content Include="TestSite\Layouts\cancel_button.png" />
-    <Content Include="TestSite\Layouts\signature_color.png" />
-    <Content Include="TestSite\scripts\jquery-3.1.1.min.js" />
-    <Content Include="TestSite\TestCaptureImage.html" />
-    <Content Include="TestSite\TestCaptureLayout.html" />
-    <Content Include="TestSite\TestCaptureJson.html" />
-    <Content Include="TestSite\TestCaptureSigData.html" />
+    <Content Include="TestSite\Layouts\accept_button.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\Layouts\cancel_button.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\Layouts\signature_color.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\scripts\jquery-3.1.1.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\TestCaptureImage.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\TestCaptureLayout.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\TestCaptureJson.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestSite\TestCaptureSigData.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

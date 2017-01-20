@@ -527,32 +527,40 @@ namespace InkDesktop
 
         private void sendResponse(HttpListenerContext context, byte[] data, string mimeType, HttpStatusCode statusCode)
         {
-            context.Response.AddHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-            context.Response.AddHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
-
-            context.Response.SendChunked = false;
-
-            if (mimeType != null)
+            try
             {
-                context.Response.ContentType = mimeType;
-            }
+                context.Response.AddHeader(ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+                context.Response.AddHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
 
-            if (data != null && data.Length > 0)
+                context.Response.SendChunked = false;
+
+                if (mimeType != null)
+                {
+                    context.Response.ContentType = mimeType;
+                }
+
+                if (data != null && data.Length > 0)
+                {
+                    context.Response.ContentLength64 = data.Length;
+
+                    Stream ms = new MemoryStream(data);
+                    byte[] buffer = new byte[1024 * 16];
+                    int nbytes;
+                    while ((nbytes = ms.Read(buffer, 0, buffer.Length)) > 0)
+                        context.Response.OutputStream.Write(buffer, 0, nbytes);
+                    ms.Close();
+                }
+
+                context.Response.StatusCode = (int)statusCode;
+                context.Response.OutputStream.Flush();
+
+                context.Response.OutputStream.Close();
+            }
+            catch(Exception ex)
             {
-                context.Response.ContentLength64 = data.Length;
-
-                Stream ms = new MemoryStream(data);
-                byte[] buffer = new byte[1024 * 16];
-                int nbytes;
-                while ((nbytes = ms.Read(buffer, 0, buffer.Length)) > 0)
-                    context.Response.OutputStream.Write(buffer, 0, nbytes);
-                ms.Close();
+                Log("Exception during send response - " + ex.Message, 1);
             }
-
-            context.Response.StatusCode = (int)statusCode;
-            context.Response.OutputStream.Flush();
-
-            context.Response.OutputStream.Close();
+            
         }
         
         private void RegisterPort(int portNo)

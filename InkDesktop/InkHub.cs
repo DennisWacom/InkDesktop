@@ -23,7 +23,7 @@ namespace InkDesktop
 {
     public partial class InkHub : Form
     {
-        public string TestSiteFolder = "C:\\Program Files (x86)\\Wacom Solution Partner\\InkDesktop\\TestSite";
+        public string TestSiteFolder = Path.Combine(Application.StartupPath, Properties.Settings.Default.TestSiteFolder);
         public string LogFolder = "";
 
         public delegate string CaptureSignatureJsonFn(string who, string why);
@@ -47,10 +47,13 @@ namespace InkDesktop
         DeviceScanner _deviceScanner;
         InkHubLogger _logger;
         SignatureCapture _signCapt;
+        SlideshowManager _slideShowManager;
 
         public const int WM_DEVICECHANGE = 0x0219;
         public const int DBT_DEVICEARRIVAL = 0x8000;
         public const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
+
+        public const int DEFAULT_SLIDESHOW_PAUSE_TIME = 6000;
 
         private List<PenDevice> _penDeviceList = new List<PenDevice>();
         private PenDevice _currentPenDevice = null;
@@ -93,8 +96,14 @@ namespace InkDesktop
             _webManager = new WebManager(".", Properties.Settings.Default.WebManagerPort, this);
             _webManager.LogFunction = WebManagerLog;
 
+            _slideShowManager = new SlideshowManager();
+            _slideShowManager.LogFunction = SlideShowLog;
+            _slideShowManager.DisplaySlideShowForConnectedDevices();
+
+
             this.Hide();
         }
+        
         
         protected void Exit(object sender, EventArgs e)
         {
@@ -106,6 +115,12 @@ namespace InkDesktop
                 _webManager = null;
             }
             
+            if(_slideShowManager != null)
+            {
+                _slideShowManager.AbortAllSlideShowThreads();
+                _slideShowManager = null;
+            }
+
             Log("Application Exit");
             Log("----------------------------------------------------------------------");
 
@@ -128,6 +143,11 @@ namespace InkDesktop
             
         }
 
+        protected void SlideShowLog(string msg, int alertType)
+        {
+            Log("[Slideshow] " + msg, alertType);
+        }
+
         protected void WebManagerLog(string msg, int alertType)
         {
             Log("[WebManager] " + msg, alertType);
@@ -140,6 +160,11 @@ namespace InkDesktop
 
         private void OpenAndFocus()
         {
+            int pauseTime = Properties.Settings.Default.SlideShowInterrupt;
+            if(pauseTime == 0) { pauseTime = DEFAULT_SLIDESHOW_PAUSE_TIME; }
+
+            _slideShowManager.PausePenDevice(_currentPenDevice, 6000);
+
             if (Application.OpenForms[this.Name] == null)
             {
                 this.Show();
@@ -472,6 +497,7 @@ namespace InkDesktop
                 }
 
                 RefreshPenDevice();
+                _slideShowManager.RefreshSlideShow();
                 //DetectPenDevice();
             }
         }
@@ -735,6 +761,23 @@ namespace InkDesktop
                 {
                     Process.Start(_logFilePath);
                 }
+            }
+        }
+
+        private void btnSlideshow_Click(object sender, EventArgs e)
+        {
+            if (_slideShowManager == null || _slideShowManager.Disposing || _slideShowManager.IsDisposed)
+            {
+                _slideShowManager = new SlideshowManager();
+            }
+            try
+            {
+                _slideShowManager.Show();
+            }
+            catch (Exception)
+            {
+                Log("Cannot show Slideshow Manager");
+                MessageBox.Show(strings.SS_MGR_UNABLE_SHOW);
             }
         }
     }

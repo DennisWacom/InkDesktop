@@ -47,6 +47,7 @@
             this.cmsInkDesktop = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.todaysLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnSlideshow = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.picHardware)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRefresh)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSettings)).BeginInit();
@@ -54,6 +55,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnWebServer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSign)).BeginInit();
             this.cmsInkDesktop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSlideshow)).BeginInit();
             this.SuspendLayout();
             // 
             // picHardware
@@ -201,21 +203,35 @@
             this.viewLogsToolStripMenuItem,
             this.todaysLogToolStripMenuItem});
             this.cmsInkDesktop.Name = "cmsInkDesktop";
-            this.cmsInkDesktop.Size = new System.Drawing.Size(153, 70);
+            this.cmsInkDesktop.Size = new System.Drawing.Size(138, 48);
             // 
             // viewLogsToolStripMenuItem
             // 
             this.viewLogsToolStripMenuItem.Name = "viewLogsToolStripMenuItem";
-            this.viewLogsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.viewLogsToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.viewLogsToolStripMenuItem.Text = "View Logs";
             this.viewLogsToolStripMenuItem.Click += new System.EventHandler(this.viewLogsToolStripMenuItem_Click);
             // 
             // todaysLogToolStripMenuItem
             // 
             this.todaysLogToolStripMenuItem.Name = "todaysLogToolStripMenuItem";
-            this.todaysLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.todaysLogToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.todaysLogToolStripMenuItem.Text = "Today\'s Log";
             this.todaysLogToolStripMenuItem.Click += new System.EventHandler(this.todaysLogToolStripMenuItem_Click);
+            // 
+            // btnSlideshow
+            // 
+            this.btnSlideshow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnSlideshow.ContextMenuStrip = this.cmsWebServer;
+            this.btnSlideshow.Image = global::InkDesktop.Properties.Resources.slideshow;
+            this.btnSlideshow.InitialImage = null;
+            this.btnSlideshow.Location = new System.Drawing.Point(133, 129);
+            this.btnSlideshow.Name = "btnSlideshow";
+            this.btnSlideshow.Size = new System.Drawing.Size(64, 64);
+            this.btnSlideshow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.btnSlideshow.TabIndex = 12;
+            this.btnSlideshow.TabStop = false;
+            this.btnSlideshow.Click += new System.EventHandler(this.btnSlideshow_Click);
             // 
             // InkHub
             // 
@@ -223,6 +239,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(380, 194);
             this.ContextMenuStrip = this.cmsInkDesktop;
+            this.Controls.Add(this.btnSlideshow);
             this.Controls.Add(this.btnSign);
             this.Controls.Add(this.btnWebServer);
             this.Controls.Add(this.picSettings);
@@ -245,6 +262,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnWebServer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnSign)).EndInit();
             this.cmsInkDesktop.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btnSlideshow)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -268,6 +286,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsInkDesktop;
         private System.Windows.Forms.ToolStripMenuItem viewLogsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem todaysLogToolStripMenuItem;
+        private System.Windows.Forms.PictureBox btnSlideshow;
     }
 }
 

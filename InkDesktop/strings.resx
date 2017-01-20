@@ -126,6 +126,9 @@
   <data name="ERROR_INK_HUB_SIGN" xml:space="preserve">
     <value>Error getting signature from InkHub</value>
   </data>
+  <data name="ERR_READ_SLIDESHOW_SETTINGS" xml:space="preserve">
+    <value>Unable to read slide show settings, default settings will be used</value>
+  </data>
   <data name="FILE_NOT_FOUND" xml:space="preserve">
     <value>File not found</value>
   </data>
@@ -147,17 +150,26 @@
   <data name="PORT_LISTEN_EXCEPTION" xml:space="preserve">
     <value>Exception listening to port</value>
   </data>
+  <data name="RUNNING" xml:space="preserve">
+    <value>Running</value>
+  </data>
   <data name="SERVER_BUSY_PREV_REQ" xml:space="preserve">
     <value>Server still pending user response from previous request</value>
   </data>
   <data name="SIGN_CAPT_UNABLE_SHOW" xml:space="preserve">
     <value>Unable to show SignatureCapture, please restart application</value>
   </data>
+  <data name="SS_MGR_UNABLE_SHOW" xml:space="preserve">
+    <value>Unable to show Slideshow Manager, please restart application</value>
+  </data>
   <data name="START" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="STOPPED" xml:space="preserve">
+    <value>Stopped</value>
   </data>
   <data name="TOOL_TIP_MSG_NOT_CLOSED" xml:space="preserve">
     <value>InkDesktop is still running in the background</value>

@@ -20,5 +20,17 @@
     <Setting Name="Logging" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="TestSiteFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TestSite</Value>
+    </Setting>
+    <Setting Name="SlideShowFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SlideShow</Value>
+    </Setting>
+    <Setting Name="SlideShowSettings" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SlideShowSettings.json</Value>
+    </Setting>
+    <Setting Name="SlideShowInterrupt" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

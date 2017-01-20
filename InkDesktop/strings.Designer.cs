@@ -70,6 +70,15 @@ namespace InkDesktop {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to read slide show settings, default settings will be used.
+        /// </summary>
+        internal static string ERR_READ_SLIDESHOW_SETTINGS {
+            get {
+                return ResourceManager.GetString("ERR_READ_SLIDESHOW_SETTINGS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error generating image.
         /// </summary>
         internal static string ERROR_GEN_IMAGE {
@@ -151,6 +160,15 @@ namespace InkDesktop {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        internal static string RUNNING {
+            get {
+                return ResourceManager.GetString("RUNNING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server still pending user response from previous request.
         /// </summary>
         internal static string SERVER_BUSY_PREV_REQ {
@@ -169,6 +187,15 @@ namespace InkDesktop {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to show Slideshow Manager, please restart application.
+        /// </summary>
+        internal static string SS_MGR_UNABLE_SHOW {
+            get {
+                return ResourceManager.GetString("SS_MGR_UNABLE_SHOW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string START {
@@ -183,6 +210,15 @@ namespace InkDesktop {
         internal static string STOP {
             get {
                 return ResourceManager.GetString("STOP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stopped.
+        /// </summary>
+        internal static string STOPPED {
+            get {
+                return ResourceManager.GetString("STOPPED", resourceCulture);
             }
         }
         
