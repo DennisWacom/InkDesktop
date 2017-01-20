@@ -100,7 +100,7 @@ namespace InkDesktop
             _slideShowManager.LogFunction = SlideShowLog;
             _slideShowManager.DisplaySlideShowForConnectedDevices();
 
-
+            this.Text = strings.INK_DESKTOP + " v" + Assembly.GetExecutingAssembly().GetName().Version;
             this.Hide();
         }
         

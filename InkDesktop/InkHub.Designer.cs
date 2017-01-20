@@ -75,7 +75,7 @@
             this.cboHardware.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboHardware.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboHardware.FormattingEnabled = true;
-            this.cboHardware.Location = new System.Drawing.Point(124, 22);
+            this.cboHardware.Location = new System.Drawing.Point(124, 27);
             this.cboHardware.Name = "cboHardware";
             this.cboHardware.Size = new System.Drawing.Size(206, 32);
             this.cboHardware.TabIndex = 5;
@@ -85,7 +85,7 @@
             this.picRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picRefresh.Image = global::InkDesktop.Properties.Resources.refresh;
-            this.picRefresh.Location = new System.Drawing.Point(260, 60);
+            this.picRefresh.Location = new System.Drawing.Point(260, 65);
             this.picRefresh.Name = "picRefresh";
             this.picRefresh.Size = new System.Drawing.Size(32, 32);
             this.picRefresh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -99,7 +99,7 @@
             this.picSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.picSettings.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picSettings.Image = global::InkDesktop.Properties.Resources.info;
-            this.picSettings.Location = new System.Drawing.Point(298, 60);
+            this.picSettings.Location = new System.Drawing.Point(298, 65);
             this.picSettings.Name = "picSettings";
             this.picSettings.Size = new System.Drawing.Size(32, 32);
             this.picSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
