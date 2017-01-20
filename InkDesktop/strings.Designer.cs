@@ -187,6 +187,15 @@ namespace InkDesktop {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SlideShow Settings Saved.
+        /// </summary>
+        internal static string SLIDESHOW_SAVED {
+            get {
+                return ResourceManager.GetString("SLIDESHOW_SAVED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to show Slideshow Manager, please restart application.
         /// </summary>
         internal static string SS_MGR_UNABLE_SHOW {

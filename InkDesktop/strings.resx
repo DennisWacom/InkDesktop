@@ -159,6 +159,9 @@
   <data name="SIGN_CAPT_UNABLE_SHOW" xml:space="preserve">
     <value>Unable to show SignatureCapture, please restart application</value>
   </data>
+  <data name="SLIDESHOW_SAVED" xml:space="preserve">
+    <value>SlideShow Settings Saved</value>
+  </data>
   <data name="SS_MGR_UNABLE_SHOW" xml:space="preserve">
     <value>Unable to show Slideshow Manager, please restart application</value>
   </data>

@@ -129,7 +129,7 @@ namespace InkDesktop
             return null;
         }
 
-        private void WriteSlideShowSettingsFile(SlideShowSettings settings, string path)
+        private bool WriteSlideShowSettingsFile(SlideShowSettings settings, string path)
         {
             try
             {
@@ -138,12 +138,16 @@ namespace InkDesktop
                 sw.Write(json);
                 sw.Flush();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Log("Error serializing default slide show settings to path - " + path);
-                return;
+                Log(ex.Message);
+                MessageBox.Show("Unable to save slideshow settings - " + ex.Message);
+                return false;
             }
             Log("Default slide show settings written to path (" + path + ") successfully");
+            
+            return true;
         }
 
         public SlideShowSettings GenerateDefaultSlideShowSettings()
@@ -389,7 +393,7 @@ namespace InkDesktop
             }
         }
 
-        private void saveSlideShowSettings(PenDevice penDevice)
+        private bool saveSlideShowSettings(PenDevice penDevice)
         {
             Log("Save slide show settings");
             
@@ -436,7 +440,7 @@ namespace InkDesktop
                 prod.Interval = int.Parse(txtInterval.Text);
             }
 
-            WriteSlideShowSettingsFile(_currentSlideShowSettings, _slideShowSettingsPath);
+            return WriteSlideShowSettingsFile(_currentSlideShowSettings, _slideShowSettingsPath);
         }
 
         private void showSlideShowImagesForDevice(PenDevice penDevice)
@@ -675,7 +679,11 @@ namespace InkDesktop
 
         private void btnShow_Click(object sender, EventArgs e)
         {
-            saveSlideShowSettings(_currentPenDevice);
+            bool result = saveSlideShowSettings(_currentPenDevice);
+            if (result)
+            {
+                MessageBox.Show(strings.SLIDESHOW_SAVED);
+            }
         }
 
         private void SlideshowManager_FormClosing(object sender, FormClosingEventArgs e)
