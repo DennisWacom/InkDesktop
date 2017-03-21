@@ -26,19 +26,19 @@ namespace InkDesktop
         public string TestSiteFolder = Path.Combine(Application.StartupPath, Properties.Settings.Default.TestSiteFolder);
         public string LogFolder = "";
 
-        public delegate string CaptureSignatureJsonFn(string who, string why);
+        public delegate string CaptureSignatureJsonFn(string who, string why, string LogPrefix);
         public CaptureSignatureJsonFn CaptureSignatureJsonDelegate;
 
-        public delegate ContextPenData CaptureSignatureFn(string who, string why);
+        public delegate ContextPenData CaptureSignatureFn(string who, string why, string LogPrefix);
         public CaptureSignatureFn CaptureSignatureDelegate;
 
-        public delegate ContextPenData RunLayoutFn(string[] layoutFiles, Dictionary<string, string> variables);
+        public delegate ContextPenData RunLayoutFn(string[] layoutFiles, Dictionary<string, string> variables, string LogPrefix);
         public RunLayoutFn RunLayoutDelegate;
 
-        public delegate ContextPenData RunLayoutJsonFn(List<string> jsons, Dictionary<string, string> variables);
+        public delegate ContextPenData RunLayoutJsonFn(List<string> jsons, Dictionary<string, string> variables, string LogPrefix);
         public RunLayoutJsonFn RunLayoutJsonDelegate;
 
-        public delegate ContextPenData CloseDefaultSignpadWindowFn();
+        public delegate ContextPenData CloseDefaultSignpadWindowFn(string LogPrefix);
         public CloseDefaultSignpadWindowFn CloseDefaultSignpadWindowDelegate;
 
         NotifyIcon _notifyIcon;
@@ -138,9 +138,16 @@ namespace InkDesktop
         {
             if(_logger != null)
             {
-                _logger.Log(msg, alertType);
+                _logger.Log("[InkHub] " + msg, alertType);
             }
-            
+        }
+
+        protected void PrefixedLog(string logPrefix, string msg, int alertType)
+        {
+            if (_logger != null)
+            {
+                _logger.Log(logPrefix + "[InkHub] " + msg, alertType);
+            }
         }
 
         protected void SlideShowLog(string msg, int alertType)
@@ -153,9 +160,9 @@ namespace InkDesktop
             Log("[WebManager] " + msg, alertType);
         }
 
-        protected void SignpadWindowLog(string msg, int alertType)
+        protected void SignpadWindowLog(string logPrefix, string msg, int alertType)
         {
-            Log("[SignpadWindow] " + msg, alertType);
+            PrefixedLog(logPrefix, "[SignpadWindow] " + msg, alertType);
         }
 
         protected void PauseSlideShow(PenDevice penDevice)
@@ -208,30 +215,32 @@ namespace InkDesktop
             }
         }
 
-        public ContextPenData CloseDefaultSignpadWindow()
+        public ContextPenData CloseDefaultSignpadWindow(string LogPrefix)
         {
-            Log("CloseDefaultSignpadWindow");
-            if(_defaultSignpadWindow != null && _defaultSignpadWindow.Visible == true)
+            Log(LogPrefix + "CloseDefaultSignpadWindow");
+            //if(_defaultSignpadWindow != null && _defaultSignpadWindow.Visible == true)
+            if (_defaultSignpadWindow != null)
             {
-                Log("Save pen data and close window");
+                Log(LogPrefix + "Save pen data and close window");
                 ContextPenData contextPenData = _defaultSignpadWindow.ContextPenData;
                 _defaultSignpadWindow.Close();
+                _defaultSignpadWindow = null;
                 return contextPenData;
             }
             else
             {
-                Log("But no signpad window opened");
+                Log(LogPrefix + "But no signpad window opened");
                 return null;
             }
         }
 
-        public ContextPenData RunLayouts(string[] layout, Dictionary<string, string> variables)
+        public ContextPenData RunLayouts(string[] layout, Dictionary<string, string> variables, string LogPrefix)
         {
             OpenAndFocus();
-            Log("Run layout files");
+            Log(LogPrefix + "Run layout files");
             if (_currentPenDevice == null)
             {
-                Log("No pen devices connected");
+                Log(LogPrefix + "No pen devices connected");
                 MessageBox.Show(strings.NOT_CONNECTED);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.NOT_CONNECTED, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.NOT_CONNECTED));
             }
@@ -243,7 +252,7 @@ namespace InkDesktop
             }
             catch (Exception ex)
             {
-                Log(ex.Message);
+                Log(LogPrefix + ex.Message);
                 //MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
                 MessageBox.Show(ex.Message);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.LAYOUT_FAIL, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
@@ -252,6 +261,7 @@ namespace InkDesktop
             UpdateLayoutElementsWithVariableValues(layoutList, variables);
 
             _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogPrefix = LogPrefix;
             _defaultSignpadWindow.LogFunction = SignpadWindowLog;
 
             int result = _defaultSignpadWindow.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
@@ -262,19 +272,19 @@ namespace InkDesktop
             }
             else
             {
-                Log(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
+                Log(LogPrefix + _currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 //MessageBox.Show(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 return new ContextPenData(result, SerializablePenDevice.ErrorMessage((PEN_DEVICE_ERROR)result));
             }
         }
 
-        public ContextPenData RunLayoutJsons(List<string> jsons, Dictionary<string, string> variables)
+        public ContextPenData RunLayoutJsons(List<string> jsons, Dictionary<string, string> variables, string LogPrefix)
         {
             OpenAndFocus();
-            Log("Run layout json");
+            Log(LogPrefix + "Run layout json");
             if (_currentPenDevice == null)
             {
-                Log("No pen devices connected");
+                Log(LogPrefix + "No pen devices connected");
                 MessageBox.Show(strings.NOT_CONNECTED);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.NOT_CONNECTED, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.NOT_CONNECTED));
             }
@@ -292,7 +302,7 @@ namespace InkDesktop
             }
             catch (Exception)
             {
-                Log("Read layout files failed - " + currentJsonFile);
+                Log(LogPrefix + "Read layout files failed - " + currentJsonFile);
                 MessageBox.Show(SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL) + " - " + currentJsonFile);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.LAYOUT_FAIL, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.LAYOUT_FAIL));
             }
@@ -300,6 +310,7 @@ namespace InkDesktop
             UpdateLayoutElementsWithVariableValues(layoutList, variables);
 
             _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogPrefix = LogPrefix;
             _defaultSignpadWindow.LogFunction = SignpadWindowLog;
 
             int result = _defaultSignpadWindow.DisplayLayoutsDialog(layoutList, _currentPenDevice, 0, this);
@@ -310,25 +321,26 @@ namespace InkDesktop
             }
             else 
             {
-                Log(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
+                Log(LogPrefix + _currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 //MessageBox.Show(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 return new ContextPenData(result, SerializablePenDevice.ErrorMessage((PEN_DEVICE_ERROR)result));
             }
         }
 
-        public ContextPenData CaptureSignature(string who, string why)
+        public ContextPenData CaptureSignature(string who, string why, string LogPrefix)
         {
             OpenAndFocus();
 
-            Log("Signature Capture for " + who + " for reason: " + why);
+            Log(LogPrefix + "Signature Capture for " + who + " for reason: " + why);
             if (_currentPenDevice == null)
             {
-                Log("No pen devices connected");
+                Log(LogPrefix + "No pen devices connected");
                 MessageBox.Show(strings.NOT_CONNECTED);
                 return new ContextPenData((int)PEN_DEVICE_ERROR.NOT_CONNECTED, SerializablePenDevice.ErrorMessage(PEN_DEVICE_ERROR.NOT_CONNECTED));
             }
 
             _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogPrefix = LogPrefix;
             _defaultSignpadWindow.LogFunction = SignpadWindowLog;
             int result = _defaultSignpadWindow.CaptureSignatureDialog(who, why, _currentPenDevice, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
@@ -340,25 +352,26 @@ namespace InkDesktop
             }
             else
             {
-                Log(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
+                Log(LogPrefix + _currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 MessageBox.Show(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 return new ContextPenData(result, SerializablePenDevice.ErrorMessage((PEN_DEVICE_ERROR)result));
             }
         }
 
-        public string CaptureSignatureJson(string who, string why)
+        public string CaptureSignatureJson(string who, string why, string LogPrefix)
         {
             OpenAndFocus();
 
-            Log("Signature Capture (Json) for " + who + " for reason: " + why);
+            Log(LogPrefix + "Signature Capture (Json) for " + who + " for reason: " + why);
             if (_currentPenDevice == null)
             {
-                Log("No pen devices connected");
+                Log(LogPrefix + "No pen devices connected");
                 MessageBox.Show(strings.NOT_CONNECTED);
                 return PEN_DEVICE_ERROR.NOT_CONNECTED.ToString();
             }
 
             _defaultSignpadWindow = new SignpadWindow();
+            _defaultSignpadWindow.LogPrefix = LogPrefix;
             _defaultSignpadWindow.LogFunction = SignpadWindowLog;
             int result = _defaultSignpadWindow.CaptureSignatureDialog(who, why, _currentPenDevice, this);
             if (result == (int)PEN_DEVICE_ERROR.NONE)
@@ -370,7 +383,7 @@ namespace InkDesktop
             }
             else
             {
-                Log(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
+                Log(LogPrefix + _currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 MessageBox.Show(_currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result));
                 return _currentPenDevice.PenDeviceErrorMessage((PEN_DEVICE_ERROR)result);
             }
@@ -535,7 +548,7 @@ namespace InkDesktop
             {
                 _deviceScanner = new DeviceScanner();
             }
-
+            
             List<PenDevice> penDeviceList = _deviceScanner.Scan();
             if (penDeviceList != null)
             {

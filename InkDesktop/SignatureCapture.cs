@@ -67,8 +67,12 @@ namespace InkDesktop
         private void resizeForm(PenDevice signpad)
         {
             Log("Resize Form");
-            signpadControl.Width = signpad.ScreenDimension.Width;
-            signpadControl.Height = signpad.ScreenDimension.Height;
+            if(signpad.DeviceType == DEVICE_TYPE.SIGNPAD)
+            {
+                signpadControl.Width = signpad.ScreenDimension.Width;
+                signpadControl.Height = signpad.ScreenDimension.Height;
+            }
+            
             ClientSize = new Size(signpadControl.Width, signpadControl.Location.Y + signpadControl.Size.Height);
             //MessageBox.Show(ClientSize.Width.ToString() + " - " + signpadControl1.Width.ToString());
         }
@@ -170,12 +174,11 @@ namespace InkDesktop
             Log("Set inking = false");
             signpadControl.SetInking(false);
 
-            Bitmap bitmap = new Bitmap(_currentPenDevice.ScreenDimension.Width, _currentPenDevice.ScreenDimension.Height);
+            Bitmap bitmap = new Bitmap(signpadControl.Width, signpadControl.Height);
             if (InkProcessor.GenerateImageFromInkData(
                 out bitmap,
                 signpadControl.PenData,
-                _currentPenDevice.TabletDimension,
-                _currentPenDevice.ScreenDimension,
+                signpadControl.Size,
                 signpadControl.GetDefaultPen(),
                 Color.White,
                 true,

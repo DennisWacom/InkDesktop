@@ -54,6 +54,7 @@ namespace InkDesktop
         public HttpListenerContext currentContext;
         private bool _threadStarted = false;
         private int _webManagerTimeout = 5000;
+        private int _webProcessId = 0;
 
         public bool Running
         {
@@ -81,6 +82,16 @@ namespace InkDesktop
         public string RootDirectory
         {
             get { return _rootDirectory; }
+        }
+
+        protected void Log(int WPID, string msg)
+        {
+            Log("[WPID " + WPID + "] " + msg);
+        }
+
+        protected void Log(int WPID, string msg, int alertType)
+        {
+            Log("[WPID " + WPID + "] " + msg, alertType);
         }
 
         protected void Log(string msg)
@@ -130,6 +141,7 @@ namespace InkDesktop
             Log("Listener initialised with prefix - http://*." + _port.ToString() + "/");
             _listener = new HttpListener();
             _listener.Prefixes.Add("http://*:" + _port.ToString() + "/");
+            _webProcessId = 0;
 
             try
             {
@@ -168,17 +180,19 @@ namespace InkDesktop
             */
         }
 
-        private void ProcessCaptureImageRequest(HttpListenerContext context, string name, string reason)
+        private void ProcessCaptureImageRequest(HttpListenerContext context, string name, string reason, int WPID)
         {
-            Log("Capture Image");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Capture Image");
+            
             ContextPenData contextPenData = null;
             try
             {
-                Log("Call CaptureSignatureDelegate to InkHub");
-                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.CaptureSignatureDelegate, new object[] { name, reason });
+                Log(WPID, "Call CaptureSignatureDelegate to InkHub");
+                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.CaptureSignatureDelegate, new object[] { name, reason, LogPrefix });
                 Bitmap bitmap = null;
-                Log("ContextPenDate received");
-                Log("Generate Image with contextPenData");
+                Log(WPID, "ContextPenDate received");
+                Log(WPID, "Generate Image with contextPenData");
                 InkProcessor.GenerateImageResult result = InkProcessor.GenerateImageFromContextPenData(out bitmap, contextPenData, Pens.Black, Color.White, true, true);
                 if (bitmap != null)
                 {
@@ -186,222 +200,227 @@ namespace InkDesktop
                     {
                         bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                         byte[] bmpBytes = ms.ToArray();
-                        Log("Send png to client");
+                        Log(WPID, "Send png to client");
                         sendResponse(context, bmpBytes, "image/png", HttpStatusCode.OK);
                     }
                 }
                 else
                 {
-                    Log("Error generating image from context pen data", 1);
+                    Log(WPID, "Error generating image from context pen data", 1);
                     sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                 }
             }
             catch (Exception)
             {
-                Log("Error capturing image from inkhub", 1);
+                Log(WPID, "Error capturing image from inkhub", 1);
                 sendErrorResponse(context, strings.ERROR_INK_HUB_SIGN);
             }
         }
 
-        private void ProcessCaptureSignatureJsonRequest(HttpListenerContext context, string name, string reason)
+        private void ProcessCaptureSignatureJsonRequest(HttpListenerContext context, string name, string reason, int WPID)
         {
-            Log("Capture Json");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Capture Json");
             string json = "";
             try
             {
-                Log("Call CaptureSignatureJsonDelegate to inkhub");
-                json = (string)_inkHub.Invoke(_inkHub.CaptureSignatureJsonDelegate, new object[] { name, reason });
+                Log(WPID, "Call CaptureSignatureJsonDelegate to inkhub");
+                json = (string)_inkHub.Invoke(_inkHub.CaptureSignatureJsonDelegate, new object[] { name, reason, LogPrefix });
             }
             catch (Exception)
             {
-                Log("Error capturing json from inkhub", 1);
+                Log(WPID, "Error capturing json from inkhub", 1);
             }
 
             if (json == null || json.Length == 0)
             {
-                Log("Json received is empty");
+                Log(WPID, "Json received is empty");
                 byte[] msgBytes = Encoding.UTF8.GetBytes("Error");
                 sendResponse(context, msgBytes, "text/plain", HttpStatusCode.InternalServerError);
             }
             else
             {
                 byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
-                Log("Sending json to client");
+                Log(WPID, "Sending json to client");
                 sendResponse(context, jsonBytes, "text/plain", HttpStatusCode.OK);
             }
         }
 
-        private void ProcessCaptureSignatureBase64Request(HttpListenerContext context, string name, string reason)
+        private void ProcessCaptureSignatureBase64Request(HttpListenerContext context, string name, string reason, int WPID)
         {
-            Log("Capture Base64");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Capture Base64");
             string json = "";
             try
             {
-                Log("Call CaptureSignatureJsonDelegate to inkhub");
-                json = (string)_inkHub.Invoke(_inkHub.CaptureSignatureJsonDelegate, new object[] { name, reason });
+                Log(WPID, "Call CaptureSignatureJsonDelegate to inkhub");
+                json = (string)_inkHub.Invoke(_inkHub.CaptureSignatureJsonDelegate, new object[] { name, reason, LogPrefix });
             }
             catch (Exception)
             {
-                Log("Error capturing json from inkhub", 1);
+                Log(WPID, "Error capturing json from inkhub", 1);
             }
 
             if (json == null || json.Length == 0)
             {
-                Log("Json received is empty");
+                Log(WPID, "Json received is empty");
                 byte[] msgBytes = Encoding.UTF8.GetBytes("Error");
                 sendResponse(context, msgBytes, "text/plain", HttpStatusCode.InternalServerError);
             }
             else
             {
-                Log("Json received");
+                Log(WPID, "Json received");
                 byte[] jsonBytes = Encoding.UTF8.GetBytes(json);
-                Log("Convert json to base64 string");
+                Log(WPID, "Convert json to base64 string");
                 string base64 = Convert.ToBase64String(jsonBytes);
                 byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);
-                Log("Sending base64 to client");
+                Log(WPID, "Sending base64 to client");
                 sendResponse(context, base64Bytes, "text/plain", HttpStatusCode.OK);
             }
         }
 
-        private void ProcessRunLayoutsRequest(HttpListenerContext context, string[] layoutFiles, Dictionary<string, string> variables)
+        private void ProcessRunLayoutsRequest(HttpListenerContext context, string[] layoutFiles, Dictionary<string, string> variables, int WPID)
         {
-            Log("Run Layouts");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Run Layouts");
             ContextPenData contextPenData = null;
             try
             {
-                Log("Call RunLayoutDelegate to Inkhub");
-                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.RunLayoutDelegate, new object[] { layoutFiles, variables });
+                Log(WPID, "Call RunLayoutDelegate to Inkhub");
+                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.RunLayoutDelegate, new object[] { layoutFiles, variables, LogPrefix });
                 if (contextPenData != null)
                 {
-                    Log("ContextPenData received");
+                    Log(WPID, "ContextPenData received");
                     Bitmap bitmap = null;
-                    Log("Generate image from contextPenData");
+                    Log(WPID, "Generate image from contextPenData");
                     InkProcessor.GenerateImageResult result = InkProcessor.GenerateImageFromContextPenData(out bitmap, contextPenData, Pens.Black, Color.White, true, true);
                     if (bitmap != null)
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            Log("Convert image to png format");
+                            Log(WPID, "Convert image to png format");
                             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                             byte[] pngBytes = ms.ToArray();
-                            Log("Convert png to base 64");
+                            Log(WPID, "Convert png to base 64");
                             string base64 = Convert.ToBase64String(pngBytes);
                             byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);
-                            Log("Sending png base64 to client");
+                            Log(WPID, "Sending png base64 to client");
                             sendResponse(context, base64Bytes, "image/png", HttpStatusCode.OK);
                         }
                     }
                     else
                     {
-                        Log("Error generating image from context pen data", 1);
+                        Log(WPID, "Error generating image from context pen data", 1);
                         sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                     }
                 }
                 else
                 {
-                    Log("ContextPenData received is empty", 1);
+                    Log(WPID, "ContextPenData received is empty", 1);
                     sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                 }
             }
             catch (Exception)
             {
-                Log("Error generating image from context pen data", 1);
+                Log(WPID, "Error generating image from context pen data", 1);
                 sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
             }
         }
 
-        private void ProcessRunLayoutJsonsRequest(HttpListenerContext context, List<string> layoutJsons, Dictionary<string, string> variables)
+        private void ProcessRunLayoutJsonsRequest(HttpListenerContext context, List<string> layoutJsons, Dictionary<string, string> variables, int WPID)
         {
-            Log("Run Layout Jsons");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Run Layout Jsons");
             ContextPenData contextPenData = null;
 
             try
             {
-                Log("Call RunLayoutDelegate to Inkhub");
-                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.RunLayoutJsonDelegate, new object[] { layoutJsons, variables });
+                Log(WPID, "Call RunLayoutDelegate to Inkhub");
+                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.RunLayoutJsonDelegate, new object[] { layoutJsons, variables, LogPrefix });
                 if (contextPenData != null)
                 {
-                    Log("ContextPenData received");
+                    Log(WPID, "ContextPenData received");
                     Bitmap bitmap = null;
-                    Log("Generate image from contextPenData");
+                    Log(WPID, "Generate image from contextPenData");
                     InkProcessor.GenerateImageResult result = InkProcessor.GenerateImageFromContextPenData(out bitmap, contextPenData, Pens.Black, Color.White, true, true);
                     if (bitmap != null)
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            Log("Convert image to png format");
+                            Log(WPID, "Convert image to png format");
                             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                             byte[] pngBytes = ms.ToArray();
-                            Log("Convert png to base 64");
+                            Log(WPID, "Convert png to base 64");
                             string base64 = Convert.ToBase64String(pngBytes);
                             byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);
-                            Log("Sending png base64 to client");
+                            Log(WPID, "Sending png base64 to client");
                             sendResponse(context, base64Bytes, "image/png", HttpStatusCode.OK);
                         }
                     }
                     else
                     {
-                        Log("Error generating image from context pen data", 1);
+                        Log(WPID, "Error generating image from context pen data", 1);
                         sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                     }
                 }
                 else
                 {
-                    Log("ContextPenData received is empty", 1);
+                    Log(WPID, "ContextPenData received is empty", 1);
                     sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                 }
             }
             catch (Exception)
             {
-                Log("Error generating image from context pen data", 1);
+                Log(WPID, "Error generating image from context pen data", 1);
                 sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
             }
         }
 
-        private void ProcessCloseSpWindowRequest(HttpListenerContext context)
+        private void ProcessCloseSpWindowRequest(HttpListenerContext context, int WPID)
         {
-            Log("Close signpad window request");
+            string LogPrefix = "[WPID " + WPID + "] ";
+            Log(WPID, "Close signpad window request");
 
             ContextPenData contextPenData = null;
             try
             {
-                Log("Call CloseSpWindow to InkHub");
-                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.CloseDefaultSignpadWindowDelegate, null);
+                Log(WPID, "Call CloseSpWindow to InkHub");
+                contextPenData = (ContextPenData)_inkHub.Invoke(_inkHub.CloseDefaultSignpadWindowDelegate, new object[] { LogPrefix });
                 if(contextPenData != null)
                 {
-                    Log("ContextPenDate received");
+                    Log(WPID, "ContextPenData received");
 
                     Bitmap bitmap = null;
-                    Log("Generate image from contextPenData");
+                    Log(WPID, "Generate image from contextPenData");
                     InkProcessor.GenerateImageResult result = InkProcessor.GenerateImageFromContextPenData(out bitmap, contextPenData, Pens.Black, Color.White, true, true);
                     if (bitmap != null)
                     {
                         using (MemoryStream ms = new MemoryStream())
                         {
-                            Log("Convert image to png format");
+                            Log(WPID, "Convert image to png format");
                             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                             byte[] pngBytes = ms.ToArray();
-                            Log("Convert png to base 64");
+                            Log(WPID, "Convert png to base 64");
                             string base64 = Convert.ToBase64String(pngBytes);
                             byte[] base64Bytes = Encoding.UTF8.GetBytes(base64);
-                            Log("Sending png base64 to client");
+                            Log(WPID, "Sending png base64 to client");
                             sendResponse(context, base64Bytes, "image/png", HttpStatusCode.OK);
                         }
                     }
                     else
                     {
-                        Log("Error generating image from context pen data", 1);
+                        Log(WPID, "Error generating image from context pen data", 1);
                         sendErrorResponse(context, strings.ERROR_GEN_IMAGE);
                     }
                 }
                 else
                 {
-                    Log("No pen data received");
+                    Log(WPID, "No pen data received");
                 }
             }
             catch (Exception)
             {
-                Log("Error capturing image from inkhub", 1);
+                Log(WPID, "Error capturing image from inkhub", 1);
                 sendErrorResponse(context, strings.ERROR_INK_HUB_SIGN);
             }
         }
@@ -420,7 +439,10 @@ namespace InkDesktop
 
         private void Process(IAsyncResult asyncResult)
         {
-            Log("Context received, Start Processing");
+            _webProcessId++;
+            int currentWPID = _webProcessId;
+
+            Log(currentWPID, "Context received, Start Processing");
 
             HttpListenerContext context = _listener.EndGetContext(asyncResult);
             _listener.BeginGetContext(Process, null);
@@ -444,7 +466,7 @@ namespace InkDesktop
             
             currentContext = context;
 
-            Log("Processing request for url - " + filename + " from " + context.Request.RemoteEndPoint.Address + " on Port :" + context.Request.RemoteEndPoint.Port);
+            Log(currentWPID, "Processing request for url - " + filename + " from " + context.Request.RemoteEndPoint.Address + " on Port :" + context.Request.RemoteEndPoint.Port);
             
             NameValueCollection query = context.Request.QueryString;
             string name = query[QUERY_NAME];
@@ -486,27 +508,27 @@ namespace InkDesktop
 
             if (filename.Equals(CAPTURE_IMAGE))
             {
-                ProcessCaptureImageRequest(context, name, reason);
+                ProcessCaptureImageRequest(context, name, reason, currentWPID);
             }
             else if (filename.Equals(CAPTURE_JSON))
             {
-                ProcessCaptureSignatureJsonRequest(context, name, reason);
+                ProcessCaptureSignatureJsonRequest(context, name, reason, currentWPID);
             }
             else if (filename.Equals(CAPTURE_BASE64))
             {
-                ProcessCaptureSignatureBase64Request(context, name, reason);
+                ProcessCaptureSignatureBase64Request(context, name, reason, currentWPID);
             }
             else if (filename.Equals(RUN_LAYOUT_FILES) && layoutFiles != null)
             {
-                ProcessRunLayoutsRequest(context, layoutFiles, Variables);
+                ProcessRunLayoutsRequest(context, layoutFiles, Variables, currentWPID);
             }
             else if(filename.Equals(RUN_LAYOUT_JSONS) && ljson != null)
             {
-                ProcessRunLayoutJsonsRequest(context, jsons, Variables);
+                ProcessRunLayoutJsonsRequest(context, jsons, Variables, currentWPID);
             }
             else if (filename.Equals(CLOSE_SPWINDOW))
             {
-                ProcessCloseSpWindowRequest(context);
+                ProcessCloseSpWindowRequest(context, currentWPID);
             }
 
             currentContext = null;

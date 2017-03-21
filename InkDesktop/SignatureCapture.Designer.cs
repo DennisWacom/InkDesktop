@@ -50,7 +50,11 @@
             // 
             // signpadControl
             // 
+            this.signpadControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.signpadControl.BackColor = System.Drawing.Color.White;
+            this.signpadControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.signpadControl.ContextMenuStrip = this.contextMenuStrip;
             this.signpadControl.DefaultInkWidth = 0.7F;
             this.signpadControl.DefaultPenColor = System.Drawing.Color.DarkBlue;

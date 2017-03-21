@@ -630,6 +630,8 @@ namespace InkDesktop
             if (penDevice.GetType().IsSubclassOf(typeof(PenDevice)) || penDevice.GetType() == typeof(PenDevice))
             {
                 PenDevice subject = (PenDevice)penDevice;
+                if (subject.DeviceType != DEVICE_TYPE.SIGNPAD) return;
+
                 Log("Initiating slideshow for " + subject.ProductModel);
                 _penDevicesWithSlideShowRunning.Add(subject);
 

@@ -55,12 +55,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InkPlatform, Version=1.0.5.7, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\WacomSolutionPartner.InkPlatform.1.0.5.7\lib\net452\InkPlatform.dll</HintPath>
+    <Reference Include="InkPlatform, Version=2.0.0.2, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\WacomSolutionPartner.InkPlatform.2.0.0.2\lib\net452\InkPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -132,6 +132,51 @@
     </Content>
     <Content Include="Utilities\getSerialPorts.exe" />
     <None Include="app.manifest" />
+    <None Include="Hardware\Wacom\DTK-1651.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTK-2241.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-1031.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-1031X.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-1141.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-1631.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-1931.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\DTU-2231.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-300.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-430.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-430V.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-500.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-520.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-530.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hardware\Wacom\STU-540.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Resources\slideshow.png" />
     <Content Include="SlideShow\STU-300\stu300a.png">
