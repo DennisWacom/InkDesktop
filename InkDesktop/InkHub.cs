@@ -548,8 +548,9 @@ namespace InkDesktop
             {
                 _deviceScanner = new DeviceScanner();
             }
+
+            List<PenDevice> penDeviceList = _deviceScanner.ScanAsync();
             
-            List<PenDevice> penDeviceList = _deviceScanner.Scan();
             if (penDeviceList != null)
             {
                 ShowPenDevice(penDeviceList);

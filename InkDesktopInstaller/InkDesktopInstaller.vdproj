@@ -21,14 +21,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_89B25DBD799A40D1E90A92F6636B63D9"
+        "MsmKey" = "8:_8B84B46B3B7442D4B6F3B00B3EBEB2CC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A992E230F73188CB3340D936A46EB88E"
         "OwnerKey" = "8:_844D78416FEF471B977E57DB1E28026A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_8B84B46B3B7442D4B6F3B00B3EBEB2CC"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_B0FF7E13B9D0AA5ADA9248837E390080"
+        "OwnerKey" = "8:_844D78416FEF471B977E57DB1E28026A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B0FF7E13B9D0AA5ADA9248837E390080"
+        "OwnerKey" = "8:_A992E230F73188CB3340D936A46EB88E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B151226D57CD0EEA5A99DB780AF017AF"
+        "OwnerKey" = "8:_844D78416FEF471B977E57DB1E28026A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B151226D57CD0EEA5A99DB780AF017AF"
+        "OwnerKey" = "8:_A992E230F73188CB3340D936A46EB88E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,19 +64,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DA3BCCA61A5EE42F19E8AA975B67C700"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B0FF7E13B9D0AA5ADA9248837E390080"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_844D78416FEF471B977E57DB1E28026A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_89B25DBD799A40D1E90A92F6636B63D9"
+        "OwnerKey" = "8:_A992E230F73188CB3340D936A46EB88E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DA3BCCA61A5EE42F19E8AA975B67C700"
+        "OwnerKey" = "8:_B151226D57CD0EEA5A99DB780AF017AF"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -142,7 +178,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.5.2"
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=395269"
                 }
@@ -150,14 +186,34 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_89B25DBD799A40D1E90A92F6636B63D9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B84B46B3B7442D4B6F3B00B3EBEB2CC"
+            {
+            "SourcePath" = "8:..\\InkDesktop\\Resources\\bluepen.ico"
+            "TargetName" = "8:bluepen.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_647BA71B3B544E628024FD69AB2E725F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A992E230F73188CB3340D936A46EB88E"
             {
             "AssemblyRegister" = "3:2"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:InkPlatform, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:InkPlatform, Version=2.0.0.4, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
-                    "_89B25DBD799A40D1E90A92F6636B63D9"
+                    "_A992E230F73188CB3340D936A46EB88E"
                     {
                     "Name" = "8:InkPlatform.dll"
                     "Attributes" = "3:512"
@@ -181,10 +237,21 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8B84B46B3B7442D4B6F3B00B3EBEB2CC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B0FF7E13B9D0AA5ADA9248837E390080"
             {
-            "SourcePath" = "8:..\\InkDesktop\\Resources\\bluepen.ico"
-            "TargetName" = "8:bluepen.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:WintabDN, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B0FF7E13B9D0AA5ADA9248837E390080"
+                    {
+                    "Name" = "8:WintabDN.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:WintabDN.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_647BA71B3B544E628024FD69AB2E725F"
             "Condition" = "8:"
@@ -198,7 +265,38 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B151226D57CD0EEA5A99DB780AF017AF"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B151226D57CD0EEA5A99DB780AF017AF"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_647BA71B3B544E628024FD69AB2E725F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DA3BCCA61A5EE42F19E8AA975B67C700"
@@ -310,15 +408,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:InkDesktop"
-        "ProductCode" = "8:{8BBD3D80-1616-4E7D-BF02-A7DD0EBE5F9B}"
-        "PackageCode" = "8:{2BB588D7-A0E4-4A3C-B8A5-492576D2C06C}"
+        "ProductCode" = "8:{97CEECED-E9C9-4A6C-A7FB-2536C5C7BCE9}"
+        "PackageCode" = "8:{312D460A-013E-45FA-B009-F1C712E03A4F}"
         "UpgradeCode" = "8:{5326E942-E1A1-4601-BEF2-18EC7A33C0DA}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Wacom Solution Partner"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
